@@ -1,0 +1,10 @@
+.venv/
+.data/
+.env
+.codex-remote-attachments/
+test-output/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.claude/settings.local.json
+test_inputs/

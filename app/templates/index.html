@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Avatar Comics</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Personalized gift comics</p>
+            <h1>My Avatar Comics</h1>
+          </div>
+          <div class="provider-pill" title="Generation provider">
+            {{ provider }}{% if gemini_enabled %} ready{% else %} mode{% endif %}
+          </div>
+        </header>
+
+        <div class="layout">
+          <form id="comic-form" class="panel">
+            <fieldset>
+              <legend>Who is this comic for?</legend>
+              <div class="grid-two">
+                <label>
+                  Their name
+                  <input id="recipient-name" required maxlength="60" placeholder="Priya">
+                </label>
+                <label>
+                  Your relationship to them (optional)
+                  <input id="relationship" maxlength="60" placeholder="my sister">
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>The Story</legend>
+              <label>
+                Occasion or event
+                <input id="occasion" required maxlength="120" placeholder="Her graduation day">
+              </label>
+              <label>
+                Tell us what happened — the more detail, the better the comic
+                <textarea id="event-details" required maxlength="2000" rows="5" placeholder="She graduated with honors after studying every night while working part-time. At the ceremony her whole family cheered, and afterwards we surprised her with a party at her favorite pizza place..."></textarea>
+              </label>
+              <label>
+                Dedication message (printed on the cover and end page)
+                <textarea id="dedication" maxlength="280" placeholder="For Priya — we are so proud of you. Love, your family."></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Photos</legend>
+              <label>
+                Upload 1-8 clear photos of them (a short video works too)
+                <input id="uploads" type="file" multiple accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.m4v,.avi" required>
+              </label>
+              <p id="upload-count" class="hint">No files selected. Clear, front-facing photos give the best comic likeness.</p>
+              <label class="check-row">
+                <input type="checkbox" id="consent" required>
+                <span>I have permission to use these photos for this comic.</span>
+              </label>
+            </fieldset>
+
+            <div class="actions">
+              <button type="submit" class="primary">Create Comic</button>
+              <button type="button" id="delete-project" class="ghost" disabled>Delete Project</button>
+            </div>
+          </form>
+
+          <section class="panel status-panel">
+            <div class="status-head">
+              <div>
+                <p class="eyebrow">Progress</p>
+                <h2 id="status-title">Ready to create</h2>
+              </div>
+              <span id="progress-number">0%</span>
+            </div>
+            <div class="progress-track">
+              <div id="progress-bar"></div>
+            </div>
+            <p id="status-message" class="status-message">Fill in the story and photos, and we'll draw an 8-page comic starring them.</p>
+            <a id="download-link" class="download-link hidden" href="#">Download PDF</a>
+          </section>
+        </div>
+      </section>
+
+      <section class="preview-band">
+        <div class="preview-head">
+          <div>
+            <p class="eyebrow">Preview</p>
+            <h2 id="preview-title">Your comic</h2>
+          </div>
+        </div>
+        <div id="preview-grid" class="preview-grid empty">
+          <p>Generated pages will appear here.</p>
+        </div>
+      </section>
+    </main>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
