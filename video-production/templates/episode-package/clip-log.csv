@@ -1,0 +1,2 @@
+shot,attempt,tool,model,prompt_version,seconds,accepted,rejection_reason,cost_notes,file_path
+1,1,Runway,Gen-4 Turbo,v1,8,,,"",""

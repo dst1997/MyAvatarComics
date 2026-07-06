@@ -61,6 +61,20 @@ Mock mode (`COMIC_AI_PROVIDER=mock`, no key needed) renders placeholder pages lo
 - The character brief uses only visible, non-sensitive traits from the photos.
 - Video uploads are accepted; representative frames are extracted with `opencv-python-headless` when available.
 
+## Preschool video pilot workflow
+
+This repository also includes a separate content-production workflow for creating
+short AI-assisted preschool videos for manual YouTube Studio upload. It does not
+change the comic app.
+
+Start here:
+
+```powershell
+Get-Content video-production\README.md
+python scripts\create_episode_package.py "Kind Hands" --lesson "sharing toys" --date 2026-07-06
+python scripts\render_free_preschool_video.py
+```
+
 ## Tests
 
 ```powershell

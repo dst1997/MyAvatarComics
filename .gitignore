@@ -8,3 +8,15 @@ __pycache__/
 .pytest_cache/
 .claude/settings.local.json
 test_inputs/
+
+# Generated video production media can be large.
+video-production/episodes/**/assets/
+video-production/episodes/**/exports/
+video-production/episodes/**/thumbnail/*.png
+video-production/episodes/**/thumbnail/*.jpg
+video-production/episodes/**/thumbnail/*.jpeg
+video-production/episodes/**/thumbnail/*.webp
+video-production/episodes/**/*.mp4
+video-production/episodes/**/*.mov
+video-production/episodes/**/*.wav
+video-production/episodes/**/*.mp3

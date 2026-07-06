@@ -1,0 +1,7 @@
+shot,duration_seconds,purpose,visual,action,narration_line,model,attempt_limit,status
+1,8,hook,"Bright soft 3D storybook opening with original characters","Gentle camera push-in","TODO","Runway Gen-4 Turbo",2,planned
+2,10,setup,"Simple location with clear props","Character notices the small problem","TODO","Runway Gen-4 Turbo",2,planned
+3,10,problem,"Close-up of mild preschool emotion","Character pauses and looks unsure","TODO","Runway Gen-4 Turbo",2,planned
+4,12,helper,"Helper character enters kindly","Helper models the life skill","TODO","Runway Gen-4 Turbo",2,planned
+5,12,practice,"Same location, calmer mood","Main character tries the skill","TODO","Runway Gen-4 Turbo",2,planned
+6,10,resolution,"Warm closing shot","Characters smile and continue play","TODO","Runway Gen-4 Turbo",2,planned
