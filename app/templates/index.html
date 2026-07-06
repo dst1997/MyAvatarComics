@@ -3,102 +3,164 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Avatar Comics</title>
+    <title>My Avatar Comics — a comic made just for them</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;1,8..60,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
     <main class="app-shell">
-      <section class="workspace">
-        <header class="topbar">
-          <div>
-            <p class="eyebrow">Personalized gift comics</p>
-            <h1>My Avatar Comics</h1>
+      <header class="topbar">
+        <div class="hero-copy">
+          <p class="eyebrow">Personalized gift comics</p>
+          <h1>My Avatar Comics</h1>
+          <p class="tagline">Turn someone's big moment into an eight-page comic book, starring them. Upload their photos, tell us what happened, and we'll draw the rest.</p>
+          <ul class="hero-points">
+            <li>Eight fully illustrated pages, cover to "The End"</li>
+            <li>A consistent cartoon likeness drawn from their photos</li>
+            <li>A print-ready PDF in about four minutes</li>
+          </ul>
+        </div>
+        <div class="hero-side">
+          <div class="provider-pill" title="Generation provider">{{ provider }}{% if gemini_enabled %} ready{% else %} mode{% endif %}</div>
+          <div class="hero-samples" aria-hidden="true">
+            <img src="/static/examples/sample-1.jpg" alt="">
+            <img src="/static/examples/sample-2.jpg" alt="">
+            <img src="/static/examples/sample-3.jpg" alt="">
           </div>
-          <div class="provider-pill" title="Generation provider">
-            {{ provider }}{% if gemini_enabled %} ready{% else %} mode{% endif %}
-          </div>
-        </header>
+        </div>
+      </header>
 
-        <div class="layout">
-          <form id="comic-form" class="panel">
-            <fieldset>
-              <legend>Who is this comic for?</legend>
-              <div class="grid-two">
-                <label>
-                  Their name
-                  <input id="recipient-name" required maxlength="60" placeholder="Priya">
-                </label>
-                <label>
-                  Your relationship to them (optional)
-                  <input id="relationship" maxlength="60" placeholder="my sister">
-                </label>
-              </div>
-            </fieldset>
+      <div class="layout">
+        <form id="comic-form" class="panel wizard" novalidate>
+          <ol class="steps-nav" id="steps-nav">
+            <li class="active" data-step="1"><span class="step-num">1</span>The story</li>
+            <li data-step="2"><span class="step-num">2</span>Photos</li>
+            <li data-step="3"><span class="step-num">3</span>Create</li>
+          </ol>
 
-            <fieldset>
-              <legend>The Story</legend>
+          <section class="wizard-step active" data-step="1">
+            <h2>Tell us their story</h2>
+            <div class="grid-two">
               <label>
-                Occasion or event
-                <input id="occasion" required maxlength="120" placeholder="Her graduation day">
+                Their name
+                <input id="recipient-name" required maxlength="60" placeholder="Priya">
               </label>
               <label>
-                Tell us what happened — the more detail, the better the comic
-                <textarea id="event-details" required maxlength="2000" rows="5" placeholder="She graduated with honors after studying every night while working part-time. At the ceremony her whole family cheered, and afterwards we surprised her with a party at her favorite pizza place..."></textarea>
+                Your relationship to them <span class="optional">optional</span>
+                <input id="relationship" maxlength="60" placeholder="my sister">
               </label>
-              <label>
-                Dedication message (printed on the cover and end page)
-                <textarea id="dedication" maxlength="280" placeholder="For Priya — we are so proud of you. Love, your family."></textarea>
-              </label>
-            </fieldset>
-
-            <fieldset>
-              <legend>Photos</legend>
-              <label>
-                Upload 1-8 clear photos of them (a short video works too)
-                <input id="uploads" type="file" multiple accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.m4v,.avi" required>
-              </label>
-              <p id="upload-count" class="hint">No files selected. Clear, front-facing photos give the best comic likeness.</p>
-              <label class="check-row">
-                <input type="checkbox" id="consent" required>
-                <span>I have permission to use these photos for this comic.</span>
-              </label>
-            </fieldset>
-
-            <div class="actions">
-              <button type="submit" class="primary">Create Comic</button>
-              <button type="button" id="delete-project" class="ghost" disabled>Delete Project</button>
             </div>
-          </form>
-
-          <section class="panel status-panel">
-            <div class="status-head">
-              <div>
-                <p class="eyebrow">Progress</p>
-                <h2 id="status-title">Ready to create</h2>
-              </div>
-              <span id="progress-number">0%</span>
+            <label>
+              Occasion or event
+              <input id="occasion" required maxlength="120" placeholder="Her graduation day">
+            </label>
+            <label>
+              What happened? The more detail, the better the comic
+              <textarea id="event-details" required maxlength="2000" rows="6" placeholder="She graduated with honors after studying every night while working part-time. At the ceremony her whole family cheered, and afterwards we surprised her with a party at her favorite pizza place..."></textarea>
+            </label>
+            <label>
+              Dedication message <span class="optional">printed on the cover and end page</span>
+              <textarea id="dedication" maxlength="280" rows="2" placeholder="For Priya — we are so proud of you. Love, your family."></textarea>
+            </label>
+            <div class="wizard-actions">
+              <span></span>
+              <button type="button" class="primary" data-next="2">Next: add photos</button>
             </div>
-            <div class="progress-track">
-              <div id="progress-bar"></div>
-            </div>
-            <p id="status-message" class="status-message">Fill in the story and photos, and we'll draw an 8-page comic starring them.</p>
-            <a id="download-link" class="download-link hidden" href="#">Download PDF</a>
           </section>
+
+          <section class="wizard-step" data-step="2">
+            <h2>Add their photos</h2>
+            <p class="hint-lead">Upload 1–8 clear photos — front-facing ones give the truest comic likeness. A short video works too.</p>
+            <label class="dropzone" id="dropzone">
+              <input id="uploads" type="file" multiple accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.m4v,.avi">
+              <span class="dropzone-icon">✦</span>
+              <strong>Choose photos</strong>
+              <span>or drop them here</span>
+            </label>
+            <div id="thumb-grid" class="thumb-grid"></div>
+            <div class="wizard-actions">
+              <button type="button" class="ghost" data-back="1">Back</button>
+              <button type="button" class="primary" data-next="3">Next: review</button>
+            </div>
+          </section>
+
+          <section class="wizard-step" data-step="3">
+            <h2>Review &amp; create</h2>
+            <dl class="review" id="review"></dl>
+            <label class="check-row">
+              <input type="checkbox" id="consent" required>
+              <span>I have permission to use these photos for this comic.</span>
+            </label>
+            <div class="wizard-actions">
+              <button type="button" class="ghost" data-back="2">Back</button>
+              <button type="submit" class="primary" id="create-button">Create their comic</button>
+            </div>
+          </section>
+        </form>
+
+        <aside class="panel status-panel">
+          <div class="status-head">
+            <div>
+              <p class="eyebrow">Progress</p>
+              <h2 id="status-title">Ready when you are</h2>
+            </div>
+            <span id="progress-number">0%</span>
+          </div>
+          <div class="progress-track"><div id="progress-bar"></div></div>
+          <ol class="milestones" id="milestones">
+            <li data-milestone="photos">Studying the photos</li>
+            <li data-milestone="story">Writing the story</li>
+            <li data-milestone="drawing">Drawing the pages</li>
+            <li data-milestone="pdf">Binding the book</li>
+          </ol>
+          <p id="status-message" class="status-message">Three little steps, and we'll draw them into their own comic book.</p>
+          <a id="download-link" class="download-link hidden" href="#">Download the comic (PDF)</a>
+          <button type="button" id="delete-project" class="ghost slim" disabled>Delete project files</button>
+        </aside>
+      </div>
+
+      <section class="how-band">
+        <div class="how-grid">
+          <div class="how-card">
+            <span class="how-num">1</span>
+            <h3>Tell their story</h3>
+            <p>The occasion, what happened, and a dedication — a few honest sentences are enough.</p>
+          </div>
+          <div class="how-card">
+            <span class="how-num">2</span>
+            <h3>We draw them in</h3>
+            <p>Their photos become a consistent comic character who stars on every page.</p>
+          </div>
+          <div class="how-card">
+            <span class="how-num">3</span>
+            <h3>Gift the book</h3>
+            <p>Preview all eight pages, redraw any you like, and download the print-ready PDF.</p>
+          </div>
         </div>
       </section>
 
       <section class="preview-band">
         <div class="preview-head">
           <div>
-            <p class="eyebrow">Preview</p>
-            <h2 id="preview-title">Your comic</h2>
+            <p class="eyebrow">The comic</p>
+            <h2 id="preview-title">Your pages will appear here</h2>
           </div>
         </div>
-        <div id="preview-grid" class="preview-grid empty">
-          <p>Generated pages will appear here.</p>
-        </div>
+        <div id="preview-grid" class="preview-grid"></div>
       </section>
     </main>
+
+    <dialog id="lightbox" class="lightbox">
+      <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">×</button>
+      <img id="lightbox-image" alt="Comic page preview">
+      <footer>
+        <span id="lightbox-label"></span>
+        <button type="button" class="ghost slim" id="lightbox-regen">Regenerate this page</button>
+      </footer>
+    </dialog>
+
     <script src="/static/app.js"></script>
   </body>
 </html>
