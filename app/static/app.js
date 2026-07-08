@@ -32,6 +32,11 @@ document.querySelector("#sign-out")?.addEventListener("click", async () => {
   window.location.href = "/login";
 });
 
+document.querySelector("#hero-start")?.addEventListener("click", () => {
+  document.querySelector("#comic-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.querySelector("#recipient-name")?.focus({ preventScroll: true });
+});
+
 /* ---------- Wizard navigation ---------- */
 
 function showStep(step) {
@@ -43,6 +48,8 @@ function showStep(step) {
     item.classList.toggle("active", number === step);
     item.classList.toggle("done", number < step);
   });
+  const ticketStep = document.querySelector("#ticket-step");
+  if (ticketStep) ticketStep.textContent = `Step ${step} of 3`;
   if (step === 3) fillReview();
 }
 

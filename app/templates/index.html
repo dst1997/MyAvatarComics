@@ -6,110 +6,126 @@
     <title>My Avatar Comics — a comic made just for them</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
-    <main class="app-shell">
-      <header class="topbar">
-        <div class="hero-copy">
-          <p class="eyebrow">Personalized gift comics</p>
-          <h1>My Avatar Comics</h1>
-          <p class="tagline">Turn someone's big moment into an eight-page comic book, starring them. Upload their photos, tell us what happened, and we'll draw the rest.</p>
-          <ul class="hero-points">
-            <li>Eight fully illustrated pages, cover to "The End"</li>
-            <li>A consistent cartoon likeness drawn from their photos</li>
-            <li>A print-ready PDF in about four minutes</li>
-          </ul>
+    <header class="band">
+      <div class="band-top">
+        <span class="wordmark">My Avatar <em>Comics</em></span>
+        <div class="band-session session-chip">
+          <span class="user-email" title="Signed in as {{ username }}">{{ username }}</span>
+          <button type="button" id="sign-out" class="chip-outline">Sign out</button>
+          <span class="provider-pill" title="Generation provider">{{ provider }}{% if gemini_enabled %} ready{% else %} mode{% endif %}</span>
         </div>
-        <div class="hero-side">
-          <div class="session-chip">
-            <span title="Signed in as {{ username }}">{{ username }}</span>
-            <button type="button" id="sign-out" class="ghost slim">Sign out</button>
-          </div>
-          <div class="provider-pill" title="Generation provider">{{ provider }}{% if gemini_enabled %} ready{% else %} mode{% endif %}</div>
-          <div class="hero-samples" aria-hidden="true">
-            <img src="/static/examples/sample-1.jpg" alt="">
-            <img src="/static/examples/sample-2.jpg" alt="">
-            <img src="/static/examples/sample-3.jpg" alt="">
-          </div>
-        </div>
-      </header>
+      </div>
 
+      <div class="band-grid">
+        <div>
+          <p class="press-line"><span class="reg" aria-hidden="true"><span></span><span></span><span></span></span> The family print shop for big moments</p>
+          <h1>Their big day, printed as <span class="under">their own comic</span></h1>
+          <p class="lede">Upload their photos, tell us what happened, and we set the whole story in ink — eight illustrated pages starring the person you love, ready to print.</p>
+          <ul class="band-facts">
+            <li><span class="mono-num">08</span>&nbsp; pages, cover to “The End”</li>
+            <li><span class="mono-num">01</span>&nbsp; consistent likeness from photos</li>
+            <li><span class="mono-num">~4 min</span>&nbsp; to a print-ready PDF</li>
+          </ul>
+          <div class="band-cta">
+            <button type="button" class="btn-press" id="hero-start">Start their comic</button>
+            <span class="hint">No design skills needed — three short steps.</span>
+          </div>
+        </div>
+        <div class="covers" aria-hidden="true">
+          <span class="burst">Made just for them!</span>
+          <img src="/static/examples/sample-1.jpg" alt="">
+          <img src="/static/examples/sample-2.jpg" alt="">
+          <img src="/static/examples/sample-3.jpg" alt="">
+        </div>
+      </div>
+    </header>
+    <svg class="tear" viewBox="0 0 1200 26" preserveAspectRatio="none" aria-hidden="true"><path d="M0 26 L0 12 L40 18 L85 8 L130 16 L180 6 L235 17 L290 9 L340 15 L395 5 L450 16 L505 8 L560 18 L615 7 L670 15 L725 9 L780 17 L835 6 L890 15 L945 8 L1000 17 L1055 7 L1110 14 L1160 8 L1200 15 L1200 26 Z"></path></svg>
+
+    <main class="app-shell">
       <div class="layout">
         <form id="comic-form" class="panel wizard" novalidate>
-          <ol class="steps-nav" id="steps-nav">
-            <li class="active" data-step="1"><span class="step-num">1</span>The story</li>
-            <li data-step="2"><span class="step-num">2</span>Photos</li>
-            <li data-step="3"><span class="step-num">3</span>Create</li>
-          </ol>
+          <div class="ticket-head">
+            <span class="eyebrow">Job ticket · their story</span>
+            <span class="eyebrow" id="ticket-step">Step 1 of 3</span>
+          </div>
+          <div class="wizard-body">
+            <ol class="steps-nav" id="steps-nav">
+              <li class="active" data-step="1"><span class="step-num">1</span>The story</li>
+              <li data-step="2"><span class="step-num">2</span>Photos</li>
+              <li data-step="3"><span class="step-num">3</span>Print</li>
+            </ol>
 
-          <section class="wizard-step active" data-step="1">
-            <h2>Tell us their story</h2>
-            <div class="grid-two">
+            <section class="wizard-step active" data-step="1">
+              <h2>Tell us their story</h2>
+              <div class="grid-two">
+                <label>
+                  Their name
+                  <input id="recipient-name" required maxlength="60" placeholder="Priya">
+                </label>
+                <label>
+                  Your relationship to them <span class="optional">optional</span>
+                  <input id="relationship" maxlength="60" placeholder="my sister">
+                </label>
+              </div>
               <label>
-                Their name
-                <input id="recipient-name" required maxlength="60" placeholder="Priya">
+                Occasion or event
+                <input id="occasion" required maxlength="120" placeholder="Her graduation day">
               </label>
               <label>
-                Your relationship to them <span class="optional">optional</span>
-                <input id="relationship" maxlength="60" placeholder="my sister">
+                What happened? The more detail, the better the comic
+                <textarea id="event-details" required maxlength="2000" rows="6" placeholder="She graduated with honors after studying every night while working part-time. At the ceremony her whole family cheered, and afterwards we surprised her with a party at her favorite pizza place..."></textarea>
               </label>
-            </div>
-            <label>
-              Occasion or event
-              <input id="occasion" required maxlength="120" placeholder="Her graduation day">
-            </label>
-            <label>
-              What happened? The more detail, the better the comic
-              <textarea id="event-details" required maxlength="2000" rows="6" placeholder="She graduated with honors after studying every night while working part-time. At the ceremony her whole family cheered, and afterwards we surprised her with a party at her favorite pizza place..."></textarea>
-            </label>
-            <label>
-              Dedication message <span class="optional">printed on the cover and end page</span>
-              <textarea id="dedication" maxlength="280" rows="2" placeholder="For Priya — we are so proud of you. Love, your family."></textarea>
-            </label>
-            <div class="wizard-actions">
-              <span></span>
-              <button type="button" class="primary" data-next="2">Next: add photos</button>
-            </div>
-          </section>
+              <label>
+                Dedication message <span class="optional">printed on the cover and end page</span>
+                <textarea id="dedication" maxlength="280" rows="2" placeholder="For Priya — we are so proud of you. Love, your family."></textarea>
+              </label>
+              <div class="wizard-actions">
+                <span></span>
+                <button type="button" class="primary" data-next="2">Next: add photos</button>
+              </div>
+            </section>
 
-          <section class="wizard-step" data-step="2">
-            <h2>Add their photos</h2>
-            <p class="hint-lead">Upload 1–8 clear photos — front-facing ones give the truest comic likeness. A short video works too.</p>
-            <label class="dropzone" id="dropzone">
-              <input id="uploads" type="file" multiple accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.m4v,.avi">
-              <span class="dropzone-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
-              </span>
-              <strong>Choose photos</strong>
-              <span>or drop them here</span>
-            </label>
-            <div id="thumb-grid" class="thumb-grid"></div>
-            <div class="wizard-actions">
-              <button type="button" class="ghost" data-back="1">Back</button>
-              <button type="button" class="primary" data-next="3">Next: review</button>
-            </div>
-          </section>
+            <section class="wizard-step" data-step="2">
+              <h2>Add their photos</h2>
+              <p class="hint-lead">Upload 1–8 clear photos — front-facing ones give the truest comic likeness. A short video works too.</p>
+              <label class="dropzone" id="dropzone">
+                <input id="uploads" type="file" multiple accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.m4v,.avi">
+                <span class="dropzone-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+                </span>
+                <strong>Choose photos</strong>
+                <span>or drop them here</span>
+              </label>
+              <div id="thumb-grid" class="thumb-grid"></div>
+              <div class="wizard-actions">
+                <button type="button" class="ghost" data-back="1">Back</button>
+                <button type="button" class="primary" data-next="3">Next: review</button>
+              </div>
+            </section>
 
-          <section class="wizard-step" data-step="3">
-            <h2>Review &amp; create</h2>
-            <dl class="review" id="review"></dl>
-            <label class="check-row">
-              <input type="checkbox" id="consent" required>
-              <span>I have permission to use these photos for this comic.</span>
-            </label>
-            <div class="wizard-actions">
-              <button type="button" class="ghost" data-back="2">Back</button>
-              <button type="submit" class="primary" id="create-button">Create their comic</button>
-            </div>
-          </section>
+            <section class="wizard-step" data-step="3">
+              <h2>Review &amp; send to press</h2>
+              <dl class="review" id="review"></dl>
+              <label class="check-row">
+                <input type="checkbox" id="consent" required>
+                <span>I have permission to use these photos for this comic.</span>
+              </label>
+              <div class="wizard-actions">
+                <button type="button" class="ghost" data-back="2">Back</button>
+                <button type="submit" class="primary" id="create-button">Print their comic</button>
+              </div>
+            </section>
+          </div>
         </form>
 
         <aside class="panel status-panel">
           <div class="status-head">
             <div>
-              <p class="eyebrow">Progress</p>
+              <p class="eyebrow">Press run</p>
               <h2 id="status-title">Ready when you are</h2>
             </div>
             <span id="progress-number">0%</span>
@@ -121,7 +137,7 @@
             <li data-milestone="drawing">Drawing the pages</li>
             <li data-milestone="pdf">Binding the book</li>
           </ol>
-          <p id="status-message" class="status-message">Three little steps, and we'll draw them into their own comic book.</p>
+          <p id="status-message" class="status-message">Three little steps, and we'll set them in ink — their own comic book.</p>
           <a id="download-link" class="download-link hidden" href="#">Download the comic (PDF)</a>
           <button type="button" id="delete-project" class="ghost slim" disabled>Delete project files</button>
         </aside>
@@ -130,17 +146,17 @@
       <section class="how-band">
         <div class="how-grid">
           <div class="how-card">
-            <span class="how-num">1</span>
+            <span class="how-num">Step 01</span>
             <h3>Tell their story</h3>
             <p>The occasion, what happened, and a dedication — a few honest sentences are enough.</p>
           </div>
           <div class="how-card">
-            <span class="how-num">2</span>
+            <span class="how-num">Step 02</span>
             <h3>We draw them in</h3>
             <p>Their photos become a consistent comic character who stars on every page.</p>
           </div>
           <div class="how-card">
-            <span class="how-num">3</span>
+            <span class="how-num">Step 03</span>
             <h3>Gift the book</h3>
             <p>Preview all eight pages, redraw any you like, and download the print-ready PDF.</p>
           </div>
@@ -150,9 +166,10 @@
       <section class="preview-band">
         <div class="preview-head">
           <div>
-            <p class="eyebrow">The comic</p>
+            <p class="eyebrow">The proof sheet</p>
             <h2 id="preview-title">Your pages will appear here</h2>
           </div>
+          <span class="preview-hint">Tap any page to redraw it</span>
         </div>
         <div id="preview-grid" class="preview-grid"></div>
       </section>
