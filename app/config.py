@@ -18,6 +18,8 @@ class Settings:
     gemini_timeout_seconds: float
     max_reference_photos: int
     page_aspect_ratio: str
+    secret_key: str | None = None
+    session_ttl_hours: float = 168.0
 
     @property
     def use_gemini(self) -> bool:
@@ -54,6 +56,8 @@ def get_settings() -> Settings:
         gemini_timeout_seconds=float(os.getenv("GEMINI_TIMEOUT_SECONDS", "300")),
         max_reference_photos=_env_int("MYAVATAR_MAX_REFERENCE_PHOTOS", 4, minimum=1),
         page_aspect_ratio=os.getenv("MYAVATAR_PAGE_ASPECT_RATIO", "2:3"),
+        secret_key=os.getenv("MYAVATAR_SECRET_KEY"),
+        session_ttl_hours=float(os.getenv("MYAVATAR_SESSION_TTL_HOURS", "168")),
     )
 
 

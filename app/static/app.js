@@ -25,6 +25,18 @@ let lightboxPage = null;
 
 const PHOTO_RE = /\.(jpg|jpeg|png|webp)$/i;
 
+/* ---------- Session ---------- */
+
+document.querySelector("#sign-out")?.addEventListener("click", async () => {
+  await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
+  window.location.href = "/login";
+});
+
+document.querySelector("#hero-start")?.addEventListener("click", () => {
+  document.querySelector("#comic-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.querySelector("#recipient-name")?.focus({ preventScroll: true });
+});
+
 /* ---------- Wizard navigation ---------- */
 
 function showStep(step) {
@@ -36,6 +48,8 @@ function showStep(step) {
     item.classList.toggle("active", number === step);
     item.classList.toggle("done", number < step);
   });
+  const ticketStep = document.querySelector("#ticket-step");
+  if (ticketStep) ticketStep.textContent = `Step ${step} of 3`;
   if (step === 3) fillReview();
 }
 
@@ -385,6 +399,10 @@ function setStatus(title, message, progress, isError = false) {
 }
 
 async function parseJson(response) {
+  if (response.status === 401) {
+    window.location.href = "/login";
+    throw new Error("Please sign in first.");
+  }
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
     const detail = data.detail;
