@@ -21,10 +21,10 @@
 body {
   margin: 0;
   font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--ink);
   background: var(--bg);
-  line-height: 1.55;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -38,9 +38,9 @@ h1, h2, h3 {
 
 .app-shell {
   min-height: 100vh;
-  width: min(1140px, 100%);
+  width: min(1180px, 100%);
   margin: 0 auto;
-  padding: 44px 28px 72px;
+  padding: 56px 32px 40px;
 }
 
 /* ---------- Header ---------- */
@@ -55,15 +55,18 @@ h1, h2, h3 {
 
 .topbar h1 {
   margin: 0;
-  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-size: clamp(2.5rem, 5vw, 3.6rem);
   font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .tagline {
-  margin: 12px 0 0;
+  margin: 16px 0 0;
   color: var(--ink-soft);
-  font-size: 1.05rem;
-  max-width: 52ch;
+  font-size: 1.15rem;
+  line-height: 1.55;
+  max-width: 50ch;
 }
 
 .hero-points {
@@ -121,12 +124,18 @@ h1, h2, h3 {
 .hero-samples img:hover { z-index: 4; transform: rotate(0deg) scale(1.04); transition: transform 0.2s; }
 
 .eyebrow {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   color: var(--accent-deep);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "✳";
+  margin-right: 7px;
+  letter-spacing: 0;
 }
 
 .provider-pill {
@@ -153,8 +162,8 @@ h1, h2, h3 {
 .panel {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 28px;
+  border-radius: 20px;
+  padding: 32px;
   box-shadow: var(--shadow-md);
 }
 
@@ -215,7 +224,7 @@ h1, h2, h3 {
   to { opacity: 1; transform: none; }
 }
 
-.wizard-step h2 { margin: 0 0 20px; font-size: 1.4rem; }
+.wizard-step h2 { margin: 0 0 22px; font-size: 1.6rem; font-weight: 500; }
 
 label {
   display: block;
@@ -230,13 +239,13 @@ label {
 input[type="text"], input:not([type]), textarea {
   display: block;
   width: 100%;
-  margin-top: 6px;
-  padding: 10px 13px;
+  margin-top: 7px;
+  padding: 12px 15px;
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--panel);
   font-weight: 400;
-  font-size: 0.93rem;
+  font-size: 0.98rem;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
@@ -371,12 +380,12 @@ textarea { resize: vertical; min-height: 56px; }
 
 button.primary {
   border: none;
-  border-radius: 10px;
-  padding: 11px 22px;
+  border-radius: 999px;
+  padding: 13px 28px;
   background: var(--accent);
   color: #fff;
   font-weight: 600;
-  font-size: 0.93rem;
+  font-size: 0.97rem;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: background 0.15s, transform 0.1s;
@@ -388,12 +397,12 @@ button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
 button.ghost {
   border: 1px solid var(--border-strong);
-  border-radius: 10px;
-  padding: 10px 18px;
+  border-radius: 999px;
+  padding: 12px 22px;
   background: var(--panel);
   color: var(--ink-soft);
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.93rem;
   cursor: pointer;
   transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
@@ -477,12 +486,12 @@ button.ghost.slim { padding: 8px 14px; font-size: 0.85rem; }
   display: block;
   text-align: center;
   margin-bottom: 10px;
-  padding: 11px 20px;
-  border-radius: 10px;
+  padding: 13px 20px;
+  border-radius: 999px;
   background: var(--ink);
   color: var(--bg);
   font-weight: 600;
-  font-size: 0.93rem;
+  font-size: 0.95rem;
   text-decoration: none;
   transition: background 0.15s;
 }
@@ -524,8 +533,33 @@ button.ghost.slim { padding: 8px 14px; font-size: 0.85rem; }
   margin-bottom: 12px;
 }
 
-.how-card h3 { margin: 0 0 6px; font-size: 1.08rem; }
-.how-card p { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+.how-card h3 { margin: 0 0 6px; font-size: 1.2rem; font-weight: 500; }
+.how-card p { margin: 0; color: var(--ink-soft); font-size: 0.94rem; }
+
+.how-head { margin-bottom: 18px; }
+.how-head h2 { margin: 0; font-size: 1.7rem; font-weight: 500; }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  color: var(--muted);
+  font-size: 0.87rem;
+}
+
+.site-footer .wordmark {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.02rem;
+  color: var(--ink-soft);
+}
+
+.site-footer .wordmark::before { content: "✳ "; color: var(--accent); }
 
 /* ---------- Preview band ---------- */
 
