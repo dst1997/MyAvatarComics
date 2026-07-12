@@ -23,6 +23,10 @@
           </ul>
         </div>
         <div class="hero-side">
+          <div class="session-chip">
+            <span title="Signed in as {{ username }}">{{ username }}</span>
+            <button type="button" id="sign-out" class="ghost slim">Sign out</button>
+          </div>
           <div class="provider-pill" title="Generation provider">{{ provider }}{% if gemini_enabled %} ready{% else %} mode{% endif %}</div>
           <div class="hero-samples" aria-hidden="true">
             <img src="/static/examples/sample-1.jpg" alt="">

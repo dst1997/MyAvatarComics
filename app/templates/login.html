@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in — My Avatar Comics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,500;0,8..60,600;1,8..60,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="auth-shell">
+      <div class="auth-card panel">
+        <p class="eyebrow">Personalized gift comics</p>
+        <h1>My Avatar Comics</h1>
+        <p class="auth-tagline">Sign in to create and revisit the comics you're making.</p>
+
+        <div class="auth-tabs" role="tablist">
+          <button type="button" class="active" id="tab-login" role="tab" aria-selected="true">Sign in</button>
+          <button type="button" id="tab-register" role="tab" aria-selected="false">Create account</button>
+        </div>
+
+        <form id="auth-form" novalidate>
+          <label>
+            Email
+            <input id="auth-email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com">
+          </label>
+          <label>
+            Password
+            <input id="auth-password" type="password" autocomplete="current-password" required maxlength="256" placeholder="••••••••">
+          </label>
+          <p id="auth-hint" class="auth-hint hidden">At least 8 characters.</p>
+          <p id="auth-error" class="field-error hidden"></p>
+          <button type="submit" class="primary" id="auth-submit">Sign in</button>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      const tabs = { login: document.querySelector("#tab-login"), register: document.querySelector("#tab-register") };
+      const form = document.querySelector("#auth-form");
+      const emailField = document.querySelector("#auth-email");
+      const passwordField = document.querySelector("#auth-password");
+      const errorNote = document.querySelector("#auth-error");
+      const hint = document.querySelector("#auth-hint");
+      const submitButton = document.querySelector("#auth-submit");
+      let mode = "login";
+
+      function setMode(next) {
+        mode = next;
+        tabs.login.classList.toggle("active", mode === "login");
+        tabs.register.classList.toggle("active", mode === "register");
+        tabs.login.setAttribute("aria-selected", String(mode === "login"));
+        tabs.register.setAttribute("aria-selected", String(mode === "register"));
+        passwordField.autocomplete = mode === "login" ? "current-password" : "new-password";
+        hint.classList.toggle("hidden", mode === "login");
+        submitButton.textContent = mode === "login" ? "Sign in" : "Create account";
+        errorNote.classList.add("hidden");
+      }
+
+      tabs.login.addEventListener("click", () => setMode("login"));
+      tabs.register.addEventListener("click", () => setMode("register"));
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        errorNote.classList.add("hidden");
+        submitButton.disabled = true;
+        try {
+          const response = await fetch(`/api/auth/${mode === "login" ? "login" : "register"}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: emailField.value.trim(), password: passwordField.value }),
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            const detail = data.detail;
+            throw new Error(Array.isArray(detail) ? detail.map((item) => item.msg).join(" ") : detail || "Request failed.");
+          }
+          window.location.href = "/";
+        } catch (error) {
+          errorNote.textContent = error.message;
+          errorNote.classList.remove("hidden");
+          submitButton.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

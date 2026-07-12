@@ -121,6 +121,16 @@ class ProjectStorage:
         self.save_status(ProjectStatus(project_id=project_id, status="uploading", progress=20, message="Media uploaded."))
         return item
 
+    def save_owner(self, project_id: str, email: str) -> None:
+        path = self.require_project_dir(project_id) / "owner.json"
+        path.write_text(json.dumps({"email": email}), encoding="utf-8")
+
+    def load_owner(self, project_id: str) -> str | None:
+        path = self.require_project_dir(project_id) / "owner.json"
+        if not path.exists():
+            return None
+        return json.loads(path.read_text(encoding="utf-8")).get("email")
+
     def delete_project(self, project_id: str) -> None:
         path = self.project_dir(project_id)
         if path.exists():
